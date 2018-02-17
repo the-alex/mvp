@@ -27,6 +27,7 @@ app.get('/api/cards', function(req, res) {
 app.post('/api/cards', function(req, res) {
   // Get image url from body
   let imageUrl = req.body.imageUrl;
+  let title = req.body.title;
   // Make a request to TP API for data.
   helpers
     .getImageLabels(imageUrl)
@@ -38,6 +39,7 @@ app.post('/api/cards', function(req, res) {
         };
       });
       const cardData = {
+        title,
         url: imageUrl,
         labels: labels,
       };

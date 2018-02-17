@@ -4,6 +4,7 @@ mongoose.connect(MONGODB_URI);
 
 let cardSchema = mongoose.Schema({
   url: {type: String, unique: true, required: true, dropDups: true},
+  title: String,
   labels: [
     {
       name: String,
@@ -25,9 +26,9 @@ let save = (cardData, callback) => {
 
 const retrieve = callback => {
   let query = Card.find();
-  query.exec((err, repos) => {
+  query.exec((err, cards) => {
     if (err) callback(err, null);
-    else callback(null, repos);
+    else callback(null, cards);
   });
 };
 

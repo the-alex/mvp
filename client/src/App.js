@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import Gallery from './Gallery.js';
 import 'semantic-ui-css/semantic.min.css';
-import {Container} from 'semantic-ui-react';
+import {Container, Header, Icon} from 'semantic-ui-react';
 
 class App extends Component {
   constructor(props) {
@@ -32,7 +32,10 @@ class App extends Component {
   render() {
     return (
       <Container>
-        <p>This is an example of some text.</p>
+        <Header as="h2" icon textAlign="center">
+          <Icon name="image" circular />
+          <Header.Content>Google Computer Vision API Demo</Header.Content>
+        </Header>
         <Gallery cards={this.state.cards} />
       </Container>
     );

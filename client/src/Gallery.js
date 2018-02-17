@@ -1,13 +1,19 @@
 import React from 'react';
-import {Header, Icon} from 'semantic-ui-react';
+import {Card} from 'semantic-ui-react';
 
 const Gallery = props => (
   <div>
-    <Header as="h2" icon textAlign="center">
-      <Icon name="image" circular />
-      <Header.Content>Google Computer Vision API Demo</Header.Content>
-    </Header>
     <p>There are {props.cards.length} cards available</p>
+    {props.cards.map((card, index) => (
+      <Card
+        key={index}
+        image={card.url}
+        header={card.title}
+        description={`I'm ${
+          card.labels[0].score
+        } condifdent that this is a(n) ${card.labels[0].name}`}
+      />
+    ))}
   </div>
 );
 
