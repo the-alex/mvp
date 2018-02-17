@@ -3,6 +3,7 @@ import axios from 'axios';
 import Gallery from './Gallery.js';
 import 'semantic-ui-css/semantic.min.css';
 import {Container, Header, Icon} from 'semantic-ui-react';
+import ImageForm from './ImageForm.js';
 
 class App extends Component {
   constructor(props) {
@@ -29,6 +30,21 @@ class App extends Component {
     this.updateCardData();
   }
 
+  addCard(imageUrl, title) {
+    console.log(imageUrl, title)
+    console.log('Posting url ...')
+    axios
+      .post('/api/cards', {
+        imageUrl,
+        title,
+      })
+      .then(res => {
+        console.log('Posted!')
+        this.updateCardData()
+      })
+      .catch(err => {console.log(err)});
+  }
+
   render() {
     return (
       <Container>
@@ -36,6 +52,7 @@ class App extends Component {
           <Icon name="image" circular />
           <Header.Content>Google Computer Vision API Demo</Header.Content>
         </Header>
+        <ImageForm addCard={this.addCard.bind(this)}/>
         <Gallery cards={this.state.cards} />
       </Container>
     );
