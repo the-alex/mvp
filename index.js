@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const helpers = require('./helpers/thirdParty.js')
+const helpers = require('./helpers/thirdParty.js');
 const db = require('./database');
 
 let app = express();
@@ -17,6 +17,10 @@ app.use(express.static(__dirname + '/client/build'));
 
 app.get('/api/cards', function(req, res) {
   // Return all cards in JSON data format
+  db.retrieve((err, results) => {
+    if (err) res.send(err);
+    else res.send(JSON.stringify(results));
+  });
 });
 
 // TODO: Simplify card creation / map function
@@ -27,7 +31,7 @@ app.post('/api/cards', function(req, res) {
   helpers
     .getImageLabels(imageUrl)
     .then(results => {
-      const labels = results[0].labelAnnotations.map(label => {
+      const labels = results.data.responses[0].labelAnnotations.map(label => {
         return {
           name: label.description,
           score: label.score,
@@ -38,7 +42,9 @@ app.post('/api/cards', function(req, res) {
         labels: labels,
       };
       db.save(cardData, (err, results) => {
-        res.send(JSON.stringify(results));
+        if (err) {
+          res.status(400).send('Bad Request: Probably a duplicate image url');
+        } else res.send(JSON.stringify(results));
       });
     })
     .catch(err => {
